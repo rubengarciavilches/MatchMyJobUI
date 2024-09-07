@@ -1,15 +1,13 @@
-import {useState} from 'react'
-import './App.css'
+import "./App.css";
+
 import JobBoard from "@/job-board/pages/JobBoard.tsx";
 
-
 function App() {
-
-    return (
-        <>
-            <JobBoard></JobBoard>
-        </>
-    )
+	return (
+		<>
+			<JobBoard></JobBoard>
+		</>
+	);
 }
 
-export default App
+export default App;

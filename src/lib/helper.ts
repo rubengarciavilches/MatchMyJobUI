@@ -1,7 +1,7 @@
 export function arrayOfNums(length: number): number[] {
-    const arr: number[] = []
-    for (let i = 0; i < length; i++) {
-        arr.push(i);
-    }
-    return arr;
+	const arr: number[] = [];
+	for (let i = 0; i < length; i++) {
+		arr.push(i);
+	}
+	return arr;
 }
