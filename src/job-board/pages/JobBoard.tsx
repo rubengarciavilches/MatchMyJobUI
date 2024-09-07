@@ -26,7 +26,7 @@ function JobBoardAsideList({
 			{isLoading
 				? arrayOfNums(20).map((num) => (
 						<SkeletonCard key={num} hasImage={true}></SkeletonCard>
-				  ))
+					))
 				: jobs.map((job, idx) => (
 						<JobCard
 							job={job}
@@ -37,7 +37,7 @@ function JobBoardAsideList({
 							setSelectedJob={setSelectedJob}
 							isLoading={isLoading}
 						></JobCard>
-				  ))}
+					))}
 		</ScrollArea>
 	);
 }
@@ -65,8 +65,8 @@ function JobBoard() {
 						{isDisabled
 							? "No jobs found"
 							: isLoading
-							? "Loading jobs..."
-							: `Found ${jobs.length} jobs`}
+								? "Loading jobs..."
+								: `Found ${jobs.length} jobs`}
 					</h3>
 				</div>
 				<JobBoardAsideList

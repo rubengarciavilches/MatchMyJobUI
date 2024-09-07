@@ -9,7 +9,7 @@
 	"bracketSpacing": true,
 	"jsxBracketSameLine": false,
 	"arrowParens": "always",
-	"endOfLine": "lf",
+	"endOfLine": "crlf",
 	"quoteProps": "as-needed",
 	"proseWrap": "preserve",
 	"htmlWhitespaceSensitivity": "css",
