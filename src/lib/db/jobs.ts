@@ -1,8 +1,6 @@
-import { createClient } from "@supabase/supabase-js";
+import { getClient } from "./common";
 
-const projectURL = import.meta.env.VITE_SUPABASE_URL;
-const publicSupabaseKey = import.meta.env.VITE_SUPABASE_PUBLIC_KEY;
-const supabase = createClient(projectURL, publicSupabaseKey);
+const supabase = getClient();
 
 export async function getJobs(): Promise<Job[]> {
 	const { data, error } = await supabase.from("job").select();
@@ -15,15 +13,18 @@ export async function getJobs(): Promise<Job[]> {
 	return data || [];
 }
 
+export type ValidSites = "linkedin" | "zip_recruiter" | "indeed" | "glassdoor";
+export type JobType = "fulltime" | "parttime" | "internship" | "contract";
+
 export type Job = {
 	id: number | undefined; // int8
-	site: string | undefined; // text
+	site: ValidSites | undefined; // text
 	job_url: string | undefined; // text
 	job_url_direct: string | undefined; // text
 	title: string | undefined; // text
 	company: string | undefined; // text
 	location: string | undefined; // text
-	job_type: string | undefined; // text
+	job_type: JobType | undefined; // text
 	date_posted: string | undefined; // date (can be ISO 8601 string)
 	interval: string | undefined; // text
 	min_amount: string | undefined; // text
