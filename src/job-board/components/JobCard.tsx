@@ -1,14 +1,14 @@
-import { Job } from "@/lib/db/jobs.ts";
 import {
 	Avatar,
 	AvatarFallback,
 	AvatarImage,
 } from "@/components/ui/avatar.tsx";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
+import { JobWithRating } from "@/lib/db/jobsRatings";
 
 interface JobCardProps {
-	job: Job;
-	setSelectedJob: (job: Job) => void;
+	job: JobWithRating;
+	setSelectedJob: (job: JobWithRating) => void;
 	isSelected: boolean;
 	isLoading: boolean;
 }
@@ -22,7 +22,7 @@ export function JobCard({
 	return (
 		<div
 			className={
-				"w-full h-32 bg-rose-900 border-b-2 border-rose-50 border-opacity-25 cursor-pointer"
+				"w-full h-auto bg-rose-900 border-b-2 border-rose-50 border-opacity-25 cursor-pointer"
 			}
 			onClick={() => setSelectedJob(job)}
 		>
@@ -50,6 +50,15 @@ export function JobCard({
 						</AvatarFallback>
 					</Avatar>
 					<h4>{job.title}</h4>
+					<h4>{job.rating.rating}</h4>
+					<h4>
+						{job.date_posted ??
+							new Date(job.created_at).toLocaleString("en-US", {
+								year: "numeric",
+								month: "2-digit",
+								day: "2-digit",
+							})}
+					</h4>
 				</div>
 			)}
 		</div>

@@ -1,6 +1,7 @@
 import { JobType, ValidSites } from "./jobs";
 
 export const JOBS_WITH_RATINGS_SELECT = `
+      id,
       site,
       job_url,
       job_url_direct,
@@ -15,6 +16,7 @@ export const JOBS_WITH_RATINGS_SELECT = `
       date_posted,
       matched_words,
       job_level,
+      created_at,
       rating(
         rating, 
         justification,
@@ -23,6 +25,7 @@ export const JOBS_WITH_RATINGS_SELECT = `
     `;
 
 export type JobWithRating = {
+	id: number | undefined; // int8
 	site: ValidSites | undefined; // text
 	job_url: string | undefined; // text
 	job_url_direct: string | undefined; // text
@@ -37,7 +40,7 @@ export type JobWithRating = {
 	date_posted: string | undefined; // date (can be ISO 8601 string)
 	matched_words: string | undefined; // text
 	job_level: string | undefined; // text
-
+	created_at: Date | string; // timestamptz (Date or ISO 8601 string)
 	rating: {
 		rating: number | undefined; // Rating from the Rating type
 		justification: string | undefined; // Justification from the Rating type

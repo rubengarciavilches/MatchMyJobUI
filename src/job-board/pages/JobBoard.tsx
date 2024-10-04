@@ -1,20 +1,52 @@
 import { useEffect, useState } from "react";
-import { Job } from "@/lib/db/jobs.ts";
 import { Separator } from "@/components/ui/separator.tsx";
 import JobDetails from "@/job-board/pages/JobDetails.tsx";
 import JobBoardAsideList from "../components/JobBoardAsideList";
 import JobFilters from "./JobFilters";
 import { useFetchData } from "@/lib/db/useFetchData";
-/*import { JOBS_WITH_RATINGS_SELECT, JobWithRating } from "@/lib/db/jobsRatings";*/
+import { JOBS_WITH_RATINGS_SELECT, JobWithRating } from "@/lib/db/jobsRatings";
+import React from "react";
+
+function useValidJobsWithRatings() {
+	const {
+		data: jobs,
+		isLoading,
+		isDisabled,
+	} = useFetchData<JobWithRating>("job", JOBS_WITH_RATINGS_SELECT);
+
+	console.log(jobs);
+
+	const filteredJobs: JobWithRating[] = React.useMemo(
+		() =>
+			jobs
+				.filter((job) => job.rating && job.rating.length > 0)
+				.map(
+					(job) =>
+						({
+							...job,
+							rating: job.rating[0],
+						}) as JobWithRating
+				)
+				.sort((a, b) => {
+					if (a.rating.rating && b.rating.rating) {
+						return b.rating.rating - a.rating.rating;
+					}
+					return 0;
+				}),
+		[jobs]
+	);
+
+	return {
+		jobs: filteredJobs,
+		isLoading,
+		isDisabled,
+	};
+}
 
 function JobBoard() {
-	const [selectedJob, setSelectedJob] = useState<Job | null>(null);
-	const { data: jobs, isLoading, isDisabled } = useFetchData<Job>("job");
-	/*const {
-		data: jobsWithRatings,
-		isLoading: isLoadingJobsWithRatings,
-		isDisabled: isDisabledJobsWithRatings,
-	} = useFetchData<JobWithRating>("job", JOBS_WITH_RATINGS_SELECT);*/
+	const [selectedJob, setSelectedJob] = useState<JobWithRating | null>(null);
+
+	const { jobs, isLoading, isDisabled } = useValidJobsWithRatings();
 
 	useEffect(() => {
 		setSelectedJob(jobs ? jobs[0] : null);

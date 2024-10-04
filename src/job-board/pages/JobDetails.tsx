@@ -4,12 +4,12 @@ import {
 	AvatarImage,
 } from "@/components/ui/avatar.tsx";
 import { markdownToHtml } from "@/lib/markdown.ts";
-import { Job } from "@/lib/db/jobs.ts";
 import SkeletonCard from "@/job-board/components/SkeletonCard.tsx";
 import { ScrollArea } from "@/components/ui/scroll-area.tsx";
+import { JobWithRating } from "@/lib/db/jobsRatings";
 
 interface JobDetailsProps {
-	job: Job;
+	job: JobWithRating;
 	isLoading: boolean;
 }
 
