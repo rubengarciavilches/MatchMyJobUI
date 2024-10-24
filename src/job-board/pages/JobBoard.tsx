@@ -6,34 +6,48 @@ import JobFilters from "./JobFilters";
 import { useFetchData } from "@/lib/db/useFetchData";
 import { JOBS_WITH_RATINGS_SELECT, JobWithRating } from "@/lib/db/jobsRatings";
 import React from "react";
+import { useFilters, ValidDates } from "@/lib/useFilters";
 
-function useValidJobsWithRatings() {
+function useValidJobsWithRatings(datePosted: ValidDates) {
 	const {
 		data: jobs,
 		isLoading,
 		isDisabled,
 	} = useFetchData<JobWithRating>("job", JOBS_WITH_RATINGS_SELECT);
 
-	console.log(jobs);
+	const pastDate = React.useMemo(() => {
+		const daysToSubtract = datePosted === 0 ? 365 : datePosted;
+		const newDate = new Date();
+		newDate.setDate(newDate.getDate() - daysToSubtract);
+		return newDate;
+	}, [datePosted]);
+
+	console.log(pastDate);
 
 	const filteredJobs: JobWithRating[] = React.useMemo(
 		() =>
 			jobs
-				.filter((job) => job.rating && job.rating.length > 0)
+				.filter(
+					(job) =>
+						((new Date(job.created_at) >= pastDate &&
+							job.rating?.at(0)?.rating) ??
+							0 > 0) &&
+						(job.description?.length ?? 0 > 20)
+				)
 				.map(
 					(job) =>
 						({
 							...job,
-							rating: job.rating[0],
+							rating: job.rating,
 						}) as JobWithRating
 				)
 				.sort((a, b) => {
-					if (a.rating.rating && b.rating.rating) {
-						return b.rating.rating - a.rating.rating;
+					if (a.rating[0].rating && b.rating[0].rating) {
+						return b.rating[0].rating - a.rating[0].rating;
 					}
 					return 0;
 				}),
-		[jobs]
+		[jobs, pastDate]
 	);
 
 	return {
@@ -45,8 +59,11 @@ function useValidJobsWithRatings() {
 
 function JobBoard() {
 	const [selectedJob, setSelectedJob] = useState<JobWithRating | null>(null);
+	const filters = useFilters();
 
-	const { jobs, isLoading, isDisabled } = useValidJobsWithRatings();
+	const { jobs, isLoading, isDisabled } = useValidJobsWithRatings(
+		filters.getters.datePosted
+	);
 
 	useEffect(() => {
 		setSelectedJob(jobs ? jobs[0] : null);
@@ -54,7 +71,7 @@ function JobBoard() {
 
 	return (
 		<div>
-			<JobFilters></JobFilters>
+			<JobFilters filters={filters}></JobFilters>
 			<main
 				className={
 					"relative z-1 h-screen max-w-6xl mx-auto bg-rose-950 flex flex-row"

@@ -50,7 +50,7 @@ export function JobCard({
 						</AvatarFallback>
 					</Avatar>
 					<h4>{job.title}</h4>
-					<h4>{job.rating.rating}</h4>
+					<h4>{job.rating[0].rating}</h4>
 					<h4>
 						{job.date_posted ??
 							new Date(job.created_at).toLocaleString("en-US", {

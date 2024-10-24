@@ -45,5 +45,5 @@ export type JobWithRating = {
 		rating: number | undefined; // Rating from the Rating type
 		justification: string | undefined; // Justification from the Rating type
 		display_data: Record<string, string> | undefined; // Display data from the Rating type
-	};
+	}[];
 };
