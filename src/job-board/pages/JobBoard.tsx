@@ -22,8 +22,6 @@ function useValidJobsWithRatings(datePosted: ValidDates) {
 		return newDate;
 	}, [datePosted]);
 
-	console.log(pastDate);
-
 	const filteredJobs: JobWithRating[] = React.useMemo(
 		() =>
 			jobs
